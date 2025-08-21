@@ -1,59 +1,110 @@
-# Directory Traversal Payload List
+# 🕵️ Linux Directory Traversal Pentesting Cheat Sheet
 
-This repository contains a curated list of **directory traversal / path traversal** payloads.  
-Use this for **educational purposes, bug bounty, or penetration testing** only.  
-
---- 
-
-## 🖥 System Files
-- /etc/passwd
-- /etc/shadow
-- /etc/group
-- /etc/hosts
-- /etc/hostname
-- /etc/issue
-- /etc/os-release
-
-## 🔑 Credentials
-- /root/.ssh/id_rsa
-- /home/<user>/.ssh/id_rsa
-- /etc/mysql/my.cnf
-- /var/www/html/config.php
-- /var/www/html/wp-config.php
-- /var/www/html/.env
-
-## 🌐 Web Configs
-- /etc/apache2/apache2.conf
-- /etc/nginx/nginx.conf
-- /etc/phpmyadmin/config.inc.php
-
-## 📝 Logs
-- /var/log/auth.log
-- /var/log/apache2/error.log
-- /var/log/nginx/access.log
-- /var/log/syslog
-
-## 🛠 Process
-- /proc/self/environ
-- /proc/self/cmdline
-
-## ☁️ Cloud / Containers
-- /root/.aws/credentials
-- /var/run/secrets/kubernetes.io/serviceaccount/token
-- /var/lib/docker/
-
-## 🖥 Windows
-- C:\Windows\System32\drivers\etc\hosts
-- C:\Windows\System32\config\SAM
-- C:\Users\<user>\.ssh\id_rsa
-- C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+When you discover **Directory Traversal (Path Traversal)** on a Linux target, here are the most valuable files and directories to check for sensitive information, credentials, and potential escalation.
 
 ---
 
-## 🔧 Usage Example
-```bash
-# Linux
-curl "http://target.com/download?file=../../../../etc/passwd"
+## 🔑 System & User Information
+- `/etc/passwd` → list of system users
+- `/etc/shadow` → password hashes
+- `/etc/group` → groups users belong to
+- `/etc/sudoers` → sudo privileges
+- `/etc/hostname` → system hostname
+- `/etc/issue` → distro banner
+- `/etc/os-release` → distribution info
 
-# Fuzz with ffuf
-ffuf -u http://target.com/download?file=FUZZ -w traversal.txt
+---
+
+## 📦 Configuration Files
+- `/etc/ssh/sshd_config` → SSH settings
+- `/root/.ssh/id_rsa` & `/home/<user>/.ssh/id_rsa` → private SSH keys
+- `/root/.ssh/authorized_keys`, `/root/.ssh/known_hosts`
+- `/etc/hosts` → local host mappings
+- `/etc/resolv.conf` → DNS config
+- `/etc/network/interfaces` or `/etc/netplan/*` → network setup
+
+---
+
+## 🌐 Web Application Files
+- `/var/www/html/config.php`
+- `/var/www/html/db.php`
+- `/var/www/html/.env` → environment variables (Laravel/Django/NodeJS)
+- `/var/www/html/wp-config.php` → WordPress DB creds
+- `/var/www/html/*/settings.py` → Django settings
+- `/var/www/html/*/config/*` or `/var/www/html/*/include/*`
+
+---
+
+## 🛢️ Database Credentials
+- `/etc/mysql/my.cnf`
+- `/root/.my.cnf`
+- `/home/<user>/.my.cnf`
+- Application configs (`config.php`, `.env`, etc.)
+
+---
+
+## 🔐 Security & Auth
+- `/var/log/auth.log` → authentication logs
+- `/var/log/secure` → (CentOS/RHEL)
+- `/etc/krb5.conf` → Kerberos config
+- `/etc/pam.d/*` → PAM configs
+
+---
+
+## 📜 Logs
+- `/var/log/apache2/access.log`
+- `/var/log/apache2/error.log`
+- `/var/log/httpd/access_log`
+- `/var/log/httpd/error_log`
+- `/var/log/nginx/access.log`
+- `/var/log/nginx/error.log`
+- `/var/log/mysql/error.log`
+- `/var/log/messages`
+- `/var/log/syslog`
+- `/var/log/dmesg`
+
+---
+
+## 👤 User Files
+- `/home/<user>/.bash_history` → command history
+- `/home/<user>/.profile`, `.bashrc`, `.zshrc`
+- `/home/<user>/.git/config` → Git repo config
+- `/home/<user>/.docker/config.json` → Docker tokens
+
+---
+
+## 🐳 Container & Cloud
+- `/root/.docker/config.json`
+- `/var/run/docker.sock` → Docker socket (RCE if writable)
+- `/etc/kubernetes/admin.conf` → kubeconfig
+- `/var/lib/cloud/instances/*/user-data.txt` → cloud-init data
+- AWS: `/home/<user>/.aws/credentials`
+- GCP: `/home/<user>/.config/gcloud/credentials.db`
+- Azure: `/home/<user>/.azure/*`
+
+---
+
+## ⚙️ Cron Jobs
+- `/etc/crontab`
+- `/etc/cron.daily/`
+- `/etc/cron.weekly/`
+- `/var/spool/cron/crontabs/*`
+
+---
+
+## 🎯 Other High-Value Files
+- `/proc/self/environ` → environment variables
+- `/proc/self/cmdline` → running process commands
+- `/proc/net/tcp` → open connections
+- `/proc/mounts` → mounted filesystems
+- `/etc/fstab` → storage config
+
+---
+
+## 🚀 Pentest Tips
+1. Start with `/etc/passwd` to confirm traversal works.
+2. Move to **web app configs** like `.env`, `wp-config.php`, `config.php` for DB creds.
+3. Check logs for internal paths, tokens, and errors.
+4. Grab SSH keys, API keys, or DB passwords for **lateral movement or RCE**.
+
+---
