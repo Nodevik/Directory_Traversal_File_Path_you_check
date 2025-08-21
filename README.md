@@ -3,7 +3,7 @@
 This repository contains a curated list of **directory traversal / path traversal** payloads.  
 Use this for **educational purposes, bug bounty, or penetration testing** only.  
 
----
+--- 
 
 ## 🖥 System Files
 - /etc/passwd
